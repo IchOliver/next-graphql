@@ -1,48 +1,52 @@
+const {ApolloServer,gql} = require('apollo-server');
 
-const express = require('express');
-const bodyParser = require('body-parser');
-const { graphqlExpress, graphiqlExpress } = require('apollo-server-express');
-const { makeExecutableSchema } = require('graphql-tools');
+const typeDefs=gql`
 
-// Some fake data
-const books = [
-  {
-    title: "Harry Potter and the Sorcerer's stone",
-    author: 'J.K. Rowling',
-  },
-  {
-    title: 'Jurassic Park',
-    author: 'Michael Crichton',
-  },
-];
+ type Book{
+     title:String,
+     author:String
+ }
+ type Author{
+     name:String,
+     book:[]
+ }
+ type Query{
+     books:[Book],
+     authors:[Author]
+ }
 
-// The GraphQL schema in string form
-const typeDefs = `
-  type Query { books: [Book] }
-  type Book { title: String, author: String }
-`;
-
-// The resolvers
+`
 const resolvers = {
-  Query: { books: () => books },
+    Query: {
+      books: () => books,
+      authors:()=> authors
+    },
 };
 
-// Put together a schema
-const schema = makeExecutableSchema({
-  typeDefs,
-  resolvers,
-});
+const server = new ApolloServer({ typeDefs, resolvers });
+server.listen().then(({ url }) => {
+    console.log(`🚀  Server ready at ${url}`);
+  });
 
-// Initialize the app
-const app = express();
 
-// The GraphQL endpoint
-app.use('/graphql', bodyParser.json(), graphqlExpress({ schema }));
-
-// GraphiQL, a visual editor for queries
-app.use('/graphiql', graphiqlExpress({ endpointURL: '/graphql' }));
-
-// Start the server
-app.listen(5000, () => {
-  console.log('Go to http://localhost:5000/graphiql to run queries!');
-});
+//fake data
+const books = [
+    {
+      title: 'The Awakening',
+      author: 'Kate Chopin',
+    },
+    {
+      title: 'City of Glass',
+      author: 'Paul Auster',
+    },
+  ];
+const authors=[
+    {
+        name:'Kate Chopin',
+        book:[
+           {
+            title: 'The Awakening',
+           }
+        ]
+    }
+]
