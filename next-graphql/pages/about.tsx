@@ -13,17 +13,9 @@ type Props = {
 
 const About: NextPage<Props> = ({ open, subreddit }) => {
   return (
-    <nav className="text-center">
-      <ul className="flex justify-between px-4 my-4 py-1">
-        <li className="flex px-2 py-1">
-          {open && (
-            <Link href="/">
-              <a className="text-blue-500 no-underline text-sm">{subreddit}</a>
-            </Link>
-          )}
-        </li>
-      </ul>
-    </nav>
+     <nav className="flex flex-wrap items-center justify-between px-2 py-3 navbar-expand-lg">
+
+     </nav>
   );
 };
 

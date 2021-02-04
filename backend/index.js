@@ -8,7 +8,7 @@ const typeDefs=gql`
  }
  type Author{
      name:String,
-     book:[]
+     book:[Book]
  }
  type Query{
      books:[Book],
